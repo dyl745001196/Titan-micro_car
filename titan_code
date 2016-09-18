@@ -1,0 +1,150 @@
+
+int count =0;
+int  n=0; // for the steps in the race 
+
+
+void setup() {
+
+
+  pinMode(5,OUTPUT);  //usb interface is back ,and 5,1 for the right wheel.8 ,0 for the left wheel
+  pinMode(8,OUTPUT);
+
+  pinMode(10,INPUT); //detect
+  
+  count=0;  //counter for detect number and specify the position
+
+  pwmConnect(0);    //and the 0 and 1 are the pwm output pins 
+  
+  pwmConnect(1); 
+}
+
+
+void run(int left_speed,int right_speed) // speed ranges from 0 to 255
+{
+  digitalWrite(5,LOW);
+  pwmWrite(CHANNELB,right_speed); //right wheel ahead
+
+  
+  digitalWrite(8,HIGH);
+  pwmWrite(CHANNELA,255-left_speed); //left wheel ahead
+}
+
+void right(int speed)
+{
+  digitalWrite(5,LOW);
+  pwmWrite(CHANNELB,0); //right wheel stop
+
+  
+  digitalWrite(8, HIGH);
+  pwmWrite(CHANNELA, 255-speed); 
+  //left wheel 
+}
+
+void left(int speed)
+{
+  digitalWrite(5,LOW);
+  pwmWrite(CHANNELB,speed); //right wheel   
+
+  
+  digitalWrite(8, LOW);
+  pwmWrite(CHANNELA,0); //left wheel stop
+}
+
+#define LEFT 210  // speed
+#define RIGHT 255 // speed 
+// by verify the speed to make the titan go straight 
+
+void loop() {
+   
+    int val=digitalRead(10);
+ 
+    run(LEFT,RIGHT);
+    if(val==0)
+      count=1;
+
+    if(count==1&&val==1&&n==0)
+    {
+      delay(100);
+      left(255);
+      delay(700);
+      run(LEFT,RIGHT);
+      delay(1000);  
+      n++;
+      count=0;
+    }
+    if(count==1&&val==1&&n==1)
+    {
+      delay(250);
+      right(255);
+      delay(680);
+      run(LEFT,RIGHT);
+      delay(1000);  
+      n++;
+      count=0;
+    }
+
+    if(count==1&&val==1&&n==2)
+    {
+      
+      run(LEFT,RIGHT);
+      delay(1000);  
+      n++;
+      count=0;
+    }
+
+    if(count==1&&val==1&&n==3)
+    {
+      delay(200);
+      left(255);
+      delay(680);
+      run(LEFT,RIGHT);
+      delay(1000);  
+      n++;
+      count=0;
+    }
+
+    if(count==1&&val==1&&n==4)
+    {
+      delay(200);
+      left(255);
+      delay(650);
+      run(LEFT,RIGHT);
+      delay(1000);  
+      n++;
+      count=0;
+    }
+    if(count==1&&val==1&&n==5)
+    {
+      
+      run(LEFT,RIGHT);
+      delay(1000);  
+      n++;
+      count=0;
+    }
+
+     if(count==1&&val==1&&n==6)
+    {
+      
+      run(LEFT,RIGHT);
+      delay(1000);  
+      n++;
+      count=0;
+    }
+     if(count==1&&val==1&&n==7)
+    {
+      delay(200);
+      right(255);
+      delay(650);
+      run(LEFT,RIGHT);
+      delay(1000);  
+      n++;
+      count=0;
+    }
+    
+  
+}
+
+
+  
+  
+
